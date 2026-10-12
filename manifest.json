@@ -1,0 +1,46 @@
+{
+  "manifestVersion": 5,
+  "id": "com.portraitperspective.phase1",
+  "name": "Portrait Perspective",
+  "version": "0.4.0",
+  "main": "index.html",
+  "host": {
+    "app": "PS",
+    "minVersion": "25.0.0",
+    "data": {
+      "apiVersion": 2
+    }
+  },
+  "entrypoints": [
+    {
+      "type": "panel",
+      "id": "portraitPerspective",
+      "label": {
+        "default": "Portrait Perspective"
+      },
+      "minimumSize": {
+        "width": 300,
+        "height": 480
+      },
+      "maximumSize": {
+        "width": 1200,
+        "height": 1600
+      },
+      "preferredDockedSize": {
+        "width": 340,
+        "height": 760
+      },
+      "preferredFloatingSize": {
+        "width": 360,
+        "height": 840
+      }
+    },
+    {
+      "type": "command",
+      "id": "portraitLocator",
+      "label": {
+        "default": "图片点选定位…"
+      }
+    }
+  ]
+}

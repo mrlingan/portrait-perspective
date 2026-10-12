@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="styles.css">
+  <title>Portrait Perspective</title>
+</head>
+<body>
+  <main id="panel-content">
+    <h1>Portrait Perspective</h1>
+    <p class="subtitle">V0.4 · 图片点选定位</p>
+    <p id="document-info" class="note">打开照片，选择原始像素图层。</p>
+    <section>
+      <h2>人脸范围 · 手动定位</h2>
+      <p class="note">用矩形选框框住额头至下巴、左右脸缘，再读取选区；也可填写画面百分比。此版本不自动检测人脸。</p>
+      <button id="locator-button" class="primary">在图片上点选定位</button>
+      <p class="note">推荐：打开定位窗口，两点画脸框，再按提示点八个位置；可放大脸部、撤销、重记。仍是手动定位。</p>
+      <button id="selection-button">从 Photoshop 选区读取</button>
+      <div class="bounds-row">
+        <label>X %<input id="face-x" type="number" min="0" max="100" step="0.1" value="25"></label>
+        <label>Y %<input id="face-y" type="number" min="0" max="100" step="0.1" value="15"></label>
+      </div>
+      <div class="bounds-row">
+        <label>宽 %<input id="face-width" type="number" min="0.1" max="100" step="0.1" value="50"></label>
+        <label>高 %<input id="face-height" type="number" min="0.1" max="100" step="0.1" value="65"></label>
+      </div>
+      <h2 class="landmark-title">记录关键点 · 手动辅助</h2>
+      <p class="note">先读人脸框，再用小矩形选框对准下列位置，点击对应按钮记录中心。左右按画面方向；鼻部/眼部需双眼、鼻尖和嘴中心，脸颊/下颌还需各自的一对轮廓点。轮廓点选在鼻尖下方的脸缘内侧。记录后重新分析。</p>
+      <div class="landmark-buttons">
+        <button id="capture-left-eye">画面左眼</button><button id="capture-right-eye">画面右眼</button>
+        <button id="capture-nose">鼻尖</button><button id="capture-mouth">嘴中心</button>
+        <button id="capture-left-cheek">左脸颊</button><button id="capture-right-cheek">右脸颊</button>
+        <button id="capture-left-jaw">左下颌</button><button id="capture-right-jaw">右下颌</button>
+      </div>
+      <button id="clear-landmarks">清空关键点</button>
+      <label class="note" for="landmarks">手动记录 / adapter 输入 JSON（画面归一化 0–1）</label>
+      <textarea id="landmarks" rows="2" placeholder='{"leftEye":[{"x":0.4,"y":0.4}],"rightEye":[{"x":0.6,"y":0.4}]}'></textarea>
+      <button id="analyze-button" class="primary">分析人脸</button>
+      <p id="analysis-info" class="note">预设人脸框只是输入示例，请按照片调整后分析。</p>
+    </section>
+    <section>
+      <div class="preset-row"><span>Preset</span><button id="preset-button">Reference Style</button></div>
+      <p class="note">保守起始参数；尚未依据参考图标定。</p>
+      <div id="sliders"></div>
+      <p class="note">脸宽/脸颊/下颌/鼻部：负值收窄，正值放宽；眼部：正值微量放大。独立调整需要关键点，缺少时跳过并提示。肤质/色调需上述六个关键点，轻调双颊；保留亮度纹理，仅支持 sRGB。</p>
+    </section>
+    <div class="actions">
+      <button id="preview-button">预览</button>
+      <button id="apply-button" class="primary">应用</button>
+      <button id="reset-button">恢复</button>
+    </div>
+    <p id="status" role="status">就绪。仅处理复制图层。</p>
+    <p class="note footer">修改滑块后再次预览；应用重新生成最终结果，恢复删除本次生成组。Skin/Tone 是含前序效果的像素快照；逐层隐藏顶部图层可比较各阶段。无实际像素变化时不建立对应层。</p>
+  </main>
+  <dialog id="locator-dialog">
+    <h2>在原图上定位 · 手动八点</h2>
+    <p class="note">先点脸框两个对角，自动放大后点眼、鼻、嘴和轮廓；重画框会清空窗口内旧点。左右按画面方向，轮廓点选在脸缘内侧。取消不改变面板输入。</p>
+    <div id="locator-step-buttons"></div>
+    <p id="locator-prompt">正在读取预览……</p>
+    <div class="locator-image-wrap"><div id="locator-stage"><img id="locator-photo" alt="当前原图的定位预览"><div id="locator-overlay"></div></div></div>
+    <div class="locator-toolbar"><button id="locator-overview">完整图片</button><button id="locator-zoom">放大人脸</button><button id="locator-undo">撤销点选</button></div>
+    <p id="locator-error" role="status"></p>
+    <div class="locator-actions"><button id="locator-cancel">取消</button><button id="locator-done" class="primary">完成定位</button></div>
+  </dialog>
+  <script src="index.js"></script>
+</body>
+</html>

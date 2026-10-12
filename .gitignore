@@ -1,0 +1,18 @@
+# OS, editor and local runtime files
+.DS_Store
+._*
+node_modules/
+coverage/
+*.log
+.env
+.env.*
+!.env.example
+.vscode/
+.idea/
+
+# Local packaging and personal reference material
+dist/
+*.ccx
+*.psd
+*.psb
+references/
